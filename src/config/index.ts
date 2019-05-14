@@ -1,8 +1,11 @@
-import { IRoleConfig } from "../types";
+import { IRoleConfig, IResourceConfig } from "../types";
 
 export interface IConfig {
   root: string;
-  roles: IRoleConfig;
+  public: IResourceConfig;
+  roles: {
+    [key: string]: IResourceConfig;
+  };
 }
 
 let config: IConfig;

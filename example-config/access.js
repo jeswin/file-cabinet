@@ -1,13 +1,15 @@
 module.exports = {
   root: "/some/dir/with/files",
-  roles: {
+  public: {
+    dirs: ["free"]
+  },
+  resources: {        
     full: {
-      eval: ({ permissions }) => permissions["pro-courses"] === "yes",
       dirs: ["courses", "exams"],
-      ignore: ["courses/prices", "courses/teachers"]
+      ignore: ["courses/prices", "courses/teachers"],
+      canAccessRoot: true
     },
     guest: {
-      eval: ({ permissions }) => permissions["guest-courses"] === "yes",
       dirs: ["courses"],
       ignore: ["courses/prices", "courses/teachers", "courses/timings"]
     }
