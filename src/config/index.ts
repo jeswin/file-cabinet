@@ -1,10 +1,10 @@
-import { IRoleConfig, IResourceConfig } from "../types";
+import { IPermissionConfig } from "../types";
 
 export interface IConfig {
   root: string;
-  public: IResourceConfig;
-  roles: {
-    [key: string]: IResourceConfig;
+  public: IPermissionConfig;
+  permissions: {
+    [key: string]: IPermissionConfig;
   };
 }
 

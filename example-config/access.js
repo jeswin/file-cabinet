@@ -1,17 +1,46 @@
 module.exports = {
   root: "/some/dir/with/files",
+  defaultDocs: ["index.htm", "index.html"],
   public: {
-    dirs: ["free"]
+    dirs: {
+      free: {
+        directoryListing: {
+          allow: false
+        }
+      }
+    }
   },
-  resources: {        
+  permissions: {
     full: {
-      dirs: ["courses", "exams"],
-      ignore: ["courses/prices", "courses/teachers"],
-      canAccessRoot: true
+      dirs: {
+        courses: {
+          pattern: {
+            type: "exclude",
+            value: ["prices/", "teachers/"]
+          }
+        },
+        exams: {}
+      },
+      root: {
+        pattern: {
+          type: "include",
+          value: ["images/"]
+        },
+        directoryListing: {
+          allow: true,
+          excludeDisallowed: true
+        }
+      }
     },
     guest: {
-      dirs: ["courses"],
-      ignore: ["courses/prices", "courses/teachers", "courses/timings"]
+      dirs: {
+        courses: {
+          pattern: {
+            type: "exclude",
+            value: ["prices/", "teachers/", "timings/"]
+          }
+        }
+      }
     }
   }
 };

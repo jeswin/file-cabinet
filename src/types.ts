@@ -1,7 +1,25 @@
-export interface IResourceConfig {
-  dirs: string[];
-  ignore: string[];
-  canAccessRoot?: boolean;
+export interface IAllowDirectoryListing {
+  allow: true,
+  excludeDisallowed:  boolean
+}
+
+export interface IDisallowDirectoryListing {
+  allow: false
+}
+
+export interface IDirConfig {
+  directoryListing?: IAllowDirectoryListing | IDisallowDirectoryListing,
+  pattern?: {
+    type: "include" | "exclude",
+    value: string[]
+  }
+}
+
+export interface IPermissionConfig {
+  dirs: {
+    [key: string]: IDirConfig;
+  };
+  root: IDirConfig;
 }
 
 export type AccessEvalFunction = (args: {

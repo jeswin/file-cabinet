@@ -2,6 +2,7 @@ import { Context } from "koa";
 import { verify } from "./jwt";
 import { get as getConfig } from "./config";
 import { join } from "path";
+import { lstat } from "fs";
 
 function invalidPath(ctx: Context) {
   ctx.status = 400;
@@ -19,22 +20,23 @@ export default async function sendFile(ctx: Context) {
 
         // Make sure the joined path falls under root.
         // It should anyway (due to prior checks), but we can't be wrong here.
-        const isSafeAccess = joinedPath.startsWith(config.root);
+        const isInsideRootDir = joinedPath.startsWith(config.root);
 
-        return !isSafeAccess
+        return !isInsideRootDir
           ? invalidPath(ctx)
           : await (async () => {
-              // Is this publicly accessible?
+              /*
+                Check if this is a file directly on root.
+              */
               const relativePath = joinedPath.replace(config.root, "");
-              const isInRoot = relativePath.split("/").length === 1;
-
-              // accessible resources = publicly accessible + token based
-              
-
-
-              // Do we have public access defined?
-              return config.public && isPubliclyAccessible(ctx.path) ? 
-
+              const isChildOfRoot = relativePath.split("/").length === 1;
+              return isChildOfRoot
+                ? await (async ctx => {
+                    // Is this a file?
+                    // If it's a file check if there are root privileges.
+                    const stat = await lstat();
+                  })()
+                : 1;
 
               const token: string = ctx.header["jwt-auth-service-token"];
 
@@ -56,6 +58,16 @@ export default async function sendFile(ctx: Context) {
               }
             })();
       })();
+}
+
+async function isFileImmediatelyUnderRoot(path: string, currentDir: string): boolean {
+  const isChildOfRoot = path.split("/").length === 1;
+  return isChildOfRoot
+    ? await (async () => {
+      // Check if the single item we got is a file or a dir
+
+    })()
+    : 
 }
 
 function isPubliclyAccessible(requestedPath: string): boolean {
