@@ -1,44 +1,28 @@
 module.exports = {
   root: "/some/dir/with/files",
   defaultDocs: ["index.htm", "index.html"],
-  public: {
-    dirs: {
-      free: {
-        directoryListing: {
-          allow: false
-        }
-      }
-    }
-  },
-  permissions: {
-    full: {
-      dirs: {
-        courses: {
-          pattern: {
-            type: "exclude",
-            value: ["prices/", "teachers/"]
-          }
-        },
-        exams: {}
-      },
-      root: {
-        pattern: {
-          type: "include",
-          value: ["images/"]
-        },
-        directoryListing: {
-          allow: true,
-          excludeDisallowed: true
-        }
-      }
+  superuser: ["ops=admin"], 
+  acl: {
+    settings: {
+      directoryListing: true,
+      hideInaccessible: true,
+      applyRecursively: false,
+      read: ["*"]
     },
-    guest: {
-      dirs: {
-        courses: {
-          pattern: {
-            type: "exclude",
-            value: ["prices/", "teachers/", "timings/"]
+    children: {
+      courses: {
+        settings: {
+          read: ["tufts-team", "reliance-team"]
+        },
+        children: {
+          exercises: {
+            settings: {}
           }
+        }
+      },
+      advanced: {
+        settings: {
+          read: ["reliance-team", "ops=admin"]
         }
       }
     }
