@@ -4,6 +4,12 @@ import { get as getConfig } from "./config";
 import { join } from "path";
 import { lstat } from "fs";
 
+
+// validate x => x < 1000, y => y < 1000
+function addSmallNumbers(x: number, y: number) {
+  
+}
+
 function invalidPath(ctx: Context) {
   ctx.status = 400;
   ctx.body = "Invalid path.";

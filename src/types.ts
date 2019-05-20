@@ -1,42 +1,41 @@
-export interface IAllowDirectoryListing {
-  allow: true,
-  excludeDisallowed:  boolean
+export interface IFilePermission {
+  owner: string;
+  group: string;
+  permissions: string[];
+  childPermissions: string[];
 }
 
-export interface IDisallowDirectoryListing {
-  allow: false
-}
-
-export interface IDirConfig {
-  directoryListing?: IAllowDirectoryListing | IDisallowDirectoryListing,
-  pattern?: {
-    type: "include" | "exclude",
-    value: string[]
-  }
+export interface IFileTreePermission {
+  [key: string]: IFileTreePermission;
+  "@": IFileTreePermission;
 }
 
 export interface IPermissionConfig {
-  dirs: {
-    [key: string]: IDirConfig;
+  root: string;
+  defaultDocs: string[];
+  superuser: string[];
+  acl: {
+    "@": {
+      owner: "ops=devops";
+      permissions: ["rw", "", "r"];
+      childPermissions: [];
+    };
+    courses: {
+      "@": {
+        group: ["tufts-team", "reliance-team"];
+        permissions: "---r-----";
+      };
+      exercises: {};
+    };
   };
-  root: IDirConfig;
 }
 
-export type AccessEvalFunction = (args: {
-  username: string;
-  permissions: {
-    resource: string;
-    value: string;
-  }[];
-  root: string;
-  path: string;
-}) => boolean;
+export interface IResourcePermissions {
+  [key: string]: string;
+}
 
 export type TokenValue = {
   username: string;
   roles: string[];
-  permissions: {
-    resource: string;
-    value: string;
-  }[];
+  tokens: IResourcePermissions;
 };
