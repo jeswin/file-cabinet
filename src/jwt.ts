@@ -1,5 +1,5 @@
 import jwt = require("jsonwebtoken");
-import { TokenValue } from "./types";
+import { IJWT } from "./types";
 
 export interface IJWTConfig {
   JWT_PUBLIC_KEY: string;
@@ -22,7 +22,7 @@ export type IVerifyResult =
     }
   | {
       valid: true;
-      value: TokenValue;
+      value: IJWT;
     };
 
 export function verify(token: string): IVerifyResult {

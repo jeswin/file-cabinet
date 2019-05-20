@@ -7,7 +7,7 @@ import { lstat } from "fs";
 
 // validate x => x < 1000, y => y < 1000
 function addSmallNumbers(x: number, y: number) {
-  
+  validate(() => x.endsWith("/"));
 }
 
 function invalidPath(ctx: Context) {

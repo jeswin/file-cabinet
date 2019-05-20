@@ -1,41 +1,29 @@
-export interface IFilePermission {
+export interface IItemPermission {
   owner: string;
   group: string;
   permissions: string[];
   childPermissions: string[];
 }
 
-export interface IFileTreePermission {
-  [key: string]: IFileTreePermission;
-  "@": IFileTreePermission;
+export interface IFileTreePermission<T extends Exclude<string, "_"> {
+  _: IItemPermission;
+  [key: T]: IFileTreePermission<string>;
 }
 
 export interface IPermissionConfig {
   root: string;
   defaultDocs: string[];
   superuser: string[];
-  acl: {
-    "@": {
-      owner: "ops=devops";
-      permissions: ["rw", "", "r"];
-      childPermissions: [];
-    };
-    courses: {
-      "@": {
-        group: ["tufts-team", "reliance-team"];
-        permissions: "---r-----";
-      };
-      exercises: {};
-    };
-  };
+  acl: IFileTreePermission;
 }
 
-export interface IResourcePermissions {
-  [key: string]: string;
+export interface IToken {
+  token: string;
+  value: string;
 }
 
-export type TokenValue = {
+export type IJWT = {
   username: string;
   roles: string[];
-  tokens: IResourcePermissions;
+  tokens: IToken[];
 };
