@@ -26,9 +26,9 @@ function getTokenString(token: string, value: string) {
 }
 
 export interface IGetPermissionResult {
-  r: boolean;
-  w: boolean;
-  x: boolean;
+  r?: boolean;
+  w?: boolean;
+  x?: boolean;
 }
 
 function hasToken(token: string, jwt: object): boolean {
@@ -49,12 +49,9 @@ function getNodePermissions(
   };
 }
 
-async function isInRootDirectory(parts: string[], config: IAppConfig) {
-  if (parts.length > 1) {
-    return false;
-  }
+async function isFile(dir: string, name: string) {
   // Check if it's a file.
-  const fullPath = join(config.root, parts[0]);
+  const fullPath = join(dir, name);
   const stat = await lstat(fullPath);
   return stat.isFile();
 }
@@ -70,32 +67,26 @@ export default function getPermissions(
     ? { r: true, w: true, x: true }
     : (() => {
         const parts = getResourceParts(resource);
-        return isInRootDirectory(parts, config)
-          ? getNodePermissions(config.app.access, jwt)
-          : (function loop(
-              currentPermissions: IGetPermissionResult,
-              parts: string[],
-              config: ICollectionConfiguration
-            ): IGetPermissionResult {
-              const [first, ...rest] = parts;
-              return rest.length // is not last item?
-                ? !config.children[first] // path missing in config?
-                  ? currentPermissions
-                  : loop(
-                      config.children[first].childAccess // child acc defined?
-                        ? getNodePermissions(
-                            config.children[first].childAccess,
-                            jwt
-                          )
-                        : currentPermissions,
-                      rest,
-                      config.children[first]
-                    )
-                : currentPermissions;
-            })(
-              getNodePermissions(config.app.childAccess, jwt),
-              parts,
-              config.app
-            );
+        return (function loop(
+          parts: string[],
+          inheritedPermissions: IGetPermissionResult,
+          collectionConfig: ICollectionConfiguration
+        ): IGetPermissionResult {
+          const [first, ...rest] = parts;
+          return rest.length // is not last item?
+            ? !collectionConfig.children[first] // path missing in config?
+              ? inheritedPermissions
+              : loop(
+                  rest,
+                  collectionConfig.children[first].access // child acc defined?
+                    ? getNodePermissions(
+                        collectionConfig.children[first].access,
+                        jwt
+                      )
+                    : inheritedPermissions,
+                  collectionConfig.children[first]
+                )
+            : inheritedPermissions;
+        })(parts, config.app.access? getNodePermissions(config.app.access, jwt) : {}, config.app);
       })();
 }

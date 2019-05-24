@@ -6,7 +6,6 @@ export interface IAccessPermission {
 
 export interface ICollectionConfiguration {
   access: IAccessPermission;
-  childAccess: IAccessPermission;
   autoIndex: boolean;
   alias: string;
   children: {

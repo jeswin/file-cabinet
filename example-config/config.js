@@ -13,12 +13,7 @@ module.exports = {
     /* 
       Access conditions for the root directory. r for '*' means that any user can read.
     */
-    access: { r: ["*"] },
-    /*
-      childAccess permissions are recursively applied until overridden.
-      Applies to all sub collections and collection entries.
-    */
-    childAccess: { r: ["ops=devops"] },
+    access: { r: ["*"] },    
     /*
       Allow directory listing
     */
