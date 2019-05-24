@@ -1,5 +1,5 @@
 module.exports = {
-  root: "/home/xuai/temp/",
+  root: "/path/to/root/dir/",
   /* Default docs when the directory is requested. */
   defaultDocs: ["index.htm", "index.html"],
   /* Super user for the app */
