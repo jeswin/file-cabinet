@@ -8,12 +8,13 @@ module.exports = {
   authServer: {
     publicKey: "blahblahblah"
   },
+  urlRewrites: [["/public", "/"]],
   /* Application configuration */
   app: {
     /* 
       Access conditions for the root directory. r for '*' means that any user can read.
     */
-    access: { r: ["*"] },    
+    access: { r: ["*"] },
     /*
       Allow directory listing
     */

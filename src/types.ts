@@ -16,6 +16,7 @@ export interface ICollectionConfiguration {
 export interface IAppConfig {
   root: string;
   defaultDocs: string[];
+  urlRewrites?: string[][];
   superuser: string;
   authServer: {
     publicKey: string;

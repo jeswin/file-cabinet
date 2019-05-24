@@ -55,7 +55,7 @@ export default async function sendFile(ctx: Context) {
                     if (fileType === "file") {
                       await send(ctx, ctx.path, { root: config.root });
                     } else if (fileType === "dir") {
-                      const indexes = ["index.html", "index.htm"];
+                      const indexes = config.defaultDocs;
                       for (let i = 0; i < indexes.length; i++) {
                         const indexFileName = join(
                           config.root,

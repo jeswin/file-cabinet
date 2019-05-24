@@ -4,6 +4,9 @@ import * as config from "./config";
 import * as jwt from "./jwt";
 import { join } from "path";
 import sendFile from "./serve";
+import { POINT_CONVERSION_COMPRESSED } from "constants";
+
+const koaRewrite = require("koa-rewrite");
 
 const gitignoreParser = require("gitignore-parser");
 
@@ -30,6 +33,25 @@ async function init() {
 
   // Start app
   var app = new Koa();
+
+  const rewrites = config.get().urlRewrites;
+  if (rewrites && rewrites.length) {
+    for (let i = 0; i < rewrites.length; i++) {
+      const [original, rewritten] = rewrites[i];
+
+      const fixedOriginal = original.startsWith("/")
+        ? original
+        : `/${original}`;
+
+      const fixedRewritten = rewritten.startsWith("/")
+        ? rewritten
+        : `/${rewritten}`;
+        
+      console.log(`${fixedOriginal}(.*)`, `${fixedRewritten}$1`);
+      app.use(koaRewrite(`${fixedOriginal}(.*)`, `${fixedRewritten}$1`));
+    }
+  }
+
   app.use(sendFile);
 
   const port = process.env.PORT;
