@@ -1,29 +1,29 @@
-export interface IItemPermission {
-  owner: string;
-  group: string;
-  permissions: string[];
-  childPermissions: string[];
+export interface IAccessPermission {
+  r?: string[];
+  w?: string[];
+  x?: string[];
 }
 
-export interface IFileTreePermission<T extends Exclude<string, "_"> {
-  _: IItemPermission;
-  [key: T]: IFileTreePermission<string>;
+export interface ICollectionConfiguration {
+  access: IAccessPermission;
+  childAccess: IAccessPermission;
+  autoIndex: boolean;
+  alias: string;
+  children: {
+    [key: string]: ICollectionConfiguration;
+  };
 }
 
-export interface IPermissionConfig {
+export interface IAppConfig {
   root: string;
   defaultDocs: string[];
-  superuser: string[];
-  acl: IFileTreePermission;
-}
-
-export interface IToken {
-  token: string;
-  value: string;
+  superuser: string;
+  authServer: {
+    publicKey: string;
+  };
+  app: ICollectionConfiguration;
 }
 
 export type IJWT = {
-  username: string;
-  roles: string[];
-  tokens: IToken[];
+  [key: string]: string;
 };

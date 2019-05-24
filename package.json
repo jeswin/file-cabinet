@@ -18,10 +18,12 @@
   "dependencies": {
     "@types/jsonwebtoken": "^8.3.2",
     "@types/koa": "^2.0.48",
+    "@types/koa-send": "^4.1.2",
     "@types/node": "^10.9.2",
     "gitignore-parser": "0.0.2",
     "jsonwebtoken": "^8.5.1",
-    "koa": "^2.7.0"
+    "koa": "^2.7.0",
+    "koa-send": "^5.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",

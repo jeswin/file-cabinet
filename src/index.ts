@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-
 import Koa = require("koa");
 import * as config from "./config";
 import * as jwt from "./jwt";
 import { join } from "path";
-import sendFile from "./sendFile";
+import sendFile from "./serve";
 
 const gitignoreParser = require("gitignore-parser");
 
@@ -23,12 +22,11 @@ async function init() {
   // Load all configs
   const configDir = process.env.CONFIG_DIR;
   const jwtConfig = require(join(configDir, "jwt.js"));
+  const appConfig = require(join(configDir, "config.js"));
 
   // Init utils
   jwt.init(jwtConfig);
-  config.init({
-    domain: process.env.DOMAIN
-  });
+  config.init(appConfig);
 
   // Start app
   var app = new Koa();

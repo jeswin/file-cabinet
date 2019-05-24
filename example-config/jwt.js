@@ -8,7 +8,7 @@ const s = "jeswinpk@agilehead.com"; // Subject
 const a = "http://agilehead.com"; // Audience
 
 // SIGNING OPTIONS
-const verifyOptions = {
+const signOptions = {
   issuer: i,
   subject: s,
   audience: a,
@@ -18,5 +18,5 @@ const verifyOptions = {
 
 module.exports = {
   JWT_PUBLIC_KEY,
-  verifyOptions
+  signOptions
 };
