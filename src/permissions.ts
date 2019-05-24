@@ -5,11 +5,6 @@ import {
   ICollectionConfiguration,
   IAccessPermission
 } from "./types";
-import { join } from "path";
-import { lstat as lstatCallback } from "fs";
-import { promisify } from "util";
-
-const lstat = promisify(lstatCallback);
 
 function getResourceParts(res: string) {
   const fixEmpty = res === "" ? "/" : res;
@@ -49,13 +44,6 @@ function getNodePermissions(
   };
 }
 
-async function isFile(dir: string, name: string) {
-  // Check if it's a file.
-  const fullPath = join(dir, name);
-  const stat = await lstat(fullPath);
-  return stat.isFile();
-}
-
 export default function getPermissions(
   resource: string,
   jwt: IJWT,
@@ -87,6 +75,10 @@ export default function getPermissions(
                   collectionConfig.children[first]
                 )
             : inheritedPermissions;
-        })(parts, config.app.access? getNodePermissions(config.app.access, jwt) : {}, config.app);
+        })(
+          parts,
+          config.app.access ? getNodePermissions(config.app.access, jwt) : {},
+          config.app
+        );
       })();
 }

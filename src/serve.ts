@@ -4,6 +4,7 @@ import { get as getConfig } from "./config";
 import { join } from "path";
 import getPermissions from "./permissions";
 import send = require("koa-send");
+import * as fsutil from "./fsutil";
 
 function invalidPath(ctx: Context) {
   ctx.status = 400;
@@ -47,7 +48,30 @@ export default async function sendFile(ctx: Context) {
                   );
 
                   if (permissions.r) {
-                    await send(ctx, ctx.path, { root: config.root });
+                    const fileType = await fsutil.getFileType(
+                      join(config.root, ctx.path)
+                    );
+
+                    if (fileType === "file") {
+                      await send(ctx, ctx.path, { root: config.root });
+                    } else if (fileType === "dir") {
+                      const indexes = ["index.html", "index.htm"];
+                      for (let i = 0; i < indexes.length; i++) {
+                        const indexFileName = join(
+                          config.root,
+                          ctx.path,
+                          indexes[i]
+                        );
+                        if (
+                          (await fsutil.getFileType(indexFileName)) === "file"
+                        ) {
+                          await send(ctx, join(ctx.path, indexes[i]), {
+                            root: config.root
+                          });
+                          break;
+                        }
+                      }
+                    }
                   } else {
                     accessDenied(ctx);
                   }

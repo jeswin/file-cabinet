@@ -1,7 +1,7 @@
 module.exports = {
-  root: "/path/to/root/dir/",
+  root: "/home/xuai/repos/jeswin/univai-tufts-static-content/public",
   /* Default docs when the directory is requested. */
-  defaultDocs: ["index.htm", "index.html"],
+  defaultDocs: ["index.html", "index.htm"],
   /* Super user for the app */
   superuser: "ops=admin",
   /* The auth servers public key */
