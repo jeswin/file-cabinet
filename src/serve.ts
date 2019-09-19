@@ -37,7 +37,7 @@ export default async function sendFile(ctx: Context) {
         return !isInsideRootDir
           ? invalidPath(ctx)
           : await (async () => {
-              const token = ctx.cookies.get("jwt_auth_service_token");
+              const token = ctx.cookies.get("border-patrol-jwt");
               if (token) {
                 const jwt = verify(token);
                 if (jwt.valid) {
