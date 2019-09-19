@@ -2,7 +2,7 @@ import jwt = require("jsonwebtoken");
 import { IJWT } from "./types";
 
 export interface IJWTConfig {
-  JWT_PUBLIC_KEY: string;
+  publicKey: string;
   verifyOptions: object;
 }
 
@@ -29,7 +29,7 @@ export function verify(token: string): IVerifyResult {
   try {
     return {
       valid: true,
-      value: jwt.verify(token, config.JWT_PUBLIC_KEY) as any
+      value: jwt.verify(token, config.publicKey) as any
     };
   } catch {
     return { valid: false };
