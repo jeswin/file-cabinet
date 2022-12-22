@@ -21,7 +21,7 @@
     "@types/koa-send": "^4.1.2",
     "@types/node": "^10.9.2",
     "gitignore-parser": "0.0.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "koa": "^2.7.0",
     "koa-rewrite": "^3.0.1",
     "koa-send": "^5.0.0"
